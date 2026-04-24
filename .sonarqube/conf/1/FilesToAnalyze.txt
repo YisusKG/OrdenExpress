@@ -1,0 +1,40 @@
+﻿C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\AdministradorTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\AuthTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\ClienteIntegrationTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\ClienteResponse.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\ClienteTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\FileServiceTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\LoginResponse.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\PedidoTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\ProductoTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\ReportesTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\StripeTests.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\UnitTest1.cs
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\UsuariosTests.cs
+C:\Users\valde\.nuget\packages\microsoft.net.test.sdk\17.12.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\valde\.nuget\packages\microsoft.testplatform.testhost\17.12.0\build\netcoreapp3.1\x64\testhost.exe
+C:\Users\valde\.nuget\packages\microsoft.testplatform.testhost\17.12.0\build\netcoreapp3.1\x64\testhost.dll
+C:\Users\valde\.nuget\packages\xunit.runner.visualstudio\2.8.2\build\net6.0\xunit.runner.visualstudio.testadapter.dll
+C:\Users\valde\.nuget\packages\xunit.runner.visualstudio\2.8.2\build\net6.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\valde\.nuget\packages\xunit.runner.visualstudio\2.8.2\build\net6.0\xunit.runner.utility.netcoreapp10.dll
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\0d4f89b6-28a5-43e9-be5b-c2b7993d2d41\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\10088be2-f054-45a0-b42e-a2168457345d\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\18063e8d-0774-44ee-b15e-f1eb71d45c59\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\1d413b95-c759-4a0f-b3d3-244dccbb94e9\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\2406a8ea-789a-4244-a5db-e266a1255a89\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\3ad1a532-4295-4693-8360-b436bf4cca6a\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\4b30d7d9-a510-46df-9abd-47f1776460a7\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\50a65177-abbd-4551-9f3b-5446eac04e7b\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\5cf5e56a-c96d-4dd8-bf5b-17284877f563\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\646b06df-7a14-488a-b23e-46f3412547e4\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\745dc581-de12-431d-a26a-57aeec5d4e68\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\7830d0ba-44e3-4fc8-af0e-5d567dfebd4b\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\890ed1f2-b0d4-4b3d-a793-8a5fe145f5b6\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\9edd839b-7906-4263-82ca-59d1ba20e2ee\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\ae08fdc2-c668-430b-a455-7b4e4d295843\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\b14743f9-20b2-4efb-9513-d57aa6f390d1\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\b6b14475-ad26-4e70-86a8-abfee27ffea4\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\b93f8302-5f8a-4c37-9e8e-919daf38077c\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\bcb81b50-4ae4-4e8d-bf57-dda38ab21b04\coverage.opencover.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\bd46d8e0-519f-441b-a314-f9eeea05f088\coverage.cobertura.xml
+C:\Users\valde\Documents\Programs Visual Studio Code\OrdenExpress\OrdenExpressAPI.Tests\TestResults\cc02c0be-af65-4ac1-abdd-d640e889a3a3\coverage.opencover.xml

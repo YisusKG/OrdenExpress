@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eliminar Producto</title>
+  <link rel="stylesheet" href="gestionar_producto.css">
+  <!-- CSP fija para permitir fetch a API -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:* ws://localhost:*;">
+</head>
+<body>
+  <header class="header">
+    <h1>Eliminar Producto</h1>
+  </header>
+
+  <main class="main">
+    <form id="formEliminar">
+      <div class="form-group">
+        <label for="selectProducto">Selecciona producto a eliminar:</label>
+        <select id="selectProducto" required>
+          <option value="">Selecciona un producto</option>
+        </select>
+      </div>
+      <button type="submit">Eliminar Producto</button>
+    </form>
+  </main>
+
+  <footer>
+    <button class="volver" onclick="location.href='gestionar_producto.html'">Volver</button>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="eliminar_producto.js"></script>
+</body>
+</html>
+

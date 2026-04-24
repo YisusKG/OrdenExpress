@@ -1,0 +1,27 @@
+  {
+  "name": "ordenexpress-frontend",
+  "version": "1.0.0",
+  "description": "Frontend OrdenExpress - Responsive Restaurant Orders",
+  "main": "server.js",
+  "scripts": {
+    "start": "lite-server --baseDir=\"public\" --port=3001",
+    "dev": "lite-server",
+    "server": "node server.js",
+    "fullstack": "concurrently \"npm run server\" \"npm run dev\"",
+    "test": "echo \"No tests yet\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mssql": "^12.2.1",
+    "multer": "^2.1.1",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.7.5"
+  }
+}

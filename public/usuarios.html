@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrar Usuarios - OrdenExpress</title>
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
+    header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: #aed6f1; text-decoration: none; font-size: 0.9rem; }
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tab-btn { padding: 0.6rem 1.4rem; border: none; border-radius: 6px; cursor: pointer; background: #ddd; font-size: 0.95rem; transition: background 0.2s; }
+    .tab-btn.active { background: #2c3e50; color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .card { background: white; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .card h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 1rem; }
+    th { background: #2c3e50; color: white; padding: 0.7rem 1rem; text-align: left; }
+    td { padding: 0.6rem 1rem; border-bottom: 1px solid #eee; }
+    tr:hover td { background: #f9f9f9; }
+    .btn { padding: 0.4rem 0.9rem; border: none; border-radius: 5px; cursor: pointer; font-size: 0.85rem; }
+    .btn-danger { background: #e74c3c; color: white; }
+    .btn-primary { background: #2c3e50; color: white; padding: 0.6rem 1.2rem; }
+    .btn-warning { background: #f39c12; color: white; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-primary:hover { background: #34495e; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 10px; padding: 2rem; width: 100%; max-width: 480px; }
+    .modal h3 { margin-top: 0; color: #2c3e50; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px; font-size: 0.95rem; box-sizing: border-box; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
+    .badge { padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+    .badge-cocina { background: #ffeeba; color: #856404; }
+    .badge-repartidor { background: #cce5ff; color: #004085; }
+    .badge-otro { background: #e2e3e5; color: #383d41; }
+    .loading { text-align: center; padding: 2rem; color: #888; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>👥 Administrar Usuarios</h1>
+  <a href="admin.html">← Volver al panel</a>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('clientes', this)">🧑 Clientes</button>
+    <button class="tab-btn" onclick="showTab('empleados', this)">👷 Empleados</button>
+  </div>
+
+  <!-- TAB CLIENTES -->
+  <div id="tab-clientes" class="tab-content active">
+    <div class="card">
+      <h2>🧑 Clientes registrados</h2>
+      <table aria-label="Tabla de clientes">
+        <thead>
+          <tr><th>ID</th><th>Nombre</th><th>Usuario</th><th>Correo</th><th>Teléfono</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="tablaClientes">
+          <tr><td colspan="6" class="loading">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB EMPLEADOS -->
+  <div id="tab-empleados" class="tab-content">
+    <div class="card">
+      <h2>👷 Empleados
+        <button class="btn btn-primary" onclick="abrirModalEmpleado()">+ Agregar empleado</button>
+      </h2>
+      <table aria-label="Tabla de clientes">
+        <thead>
+          <tr><th>ID</th><th>Nombre</th><th>Usuario</th><th>Correo</th><th>Teléfono</th><th>Rol</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="tablaEmpleados">
+          <tr><td colspan="7" class="loading">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EMPLEADO -->
+<div class="modal-overlay" id="modalEmpleado">
+  <div class="modal">
+    <h3 id="modalTitulo">Agregar Empleado</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" id="empNombre" placeholder="Nombre">
+      </div>
+      <div class="form-group">
+        <label>Apellido Paterno *</label>
+        <input type="text" id="empApellidoP" placeholder="Apellido Paterno">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Apellido Materno</label>
+        <input type="text" id="empApellidoM" placeholder="Apellido Materno">
+      </div>
+      <div class="form-group">
+        <label>Teléfono *</label>
+        <input type="text" id="empTelefono" placeholder="Teléfono">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Correo *</label>
+      <input type="email" id="empCorreo" placeholder="correo@ejemplo.com">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Usuario *</label>
+        <input type="text" id="empUsuario" placeholder="usuario">
+      </div>
+      <div class="form-group">
+        <label>Contraseña <span id="passHint">(requerida)</span></label>
+        <input type="password" id="empPassword" placeholder="contraseña">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Rol *</label>
+      <select id="empRol">
+        <option value="Cocina">Cocina</option>
+        <option value="Repartidor">Repartidor</option>
+        <option value="Caja">Caja</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" style="background:#eee" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarEmpleado()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  if (!isAdmin()) { alert("Acceso no autorizado."); window.location.href = "login.html"; }
+
+  const API = "http://localhost:5022/api/usuarios";
+  let empleadoEditandoId = null;
+
+  function h() {
+    return { "Authorization": `Bearer ${getToken()}`, "Content-Type": "application/json" };
+  }
+
+  function showTab(tab, btn) {
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + tab).classList.add("active");
+    btn.classList.add("active");
+  }
+
+  function badgeRol(rol) {
+    const map = { "Cocina": "badge-cocina", "Repartidor": "badge-repartidor" };
+    return `<span class="badge ${map[rol] || 'badge-otro'}">${rol}</span>`;
+  }
+
+  // ── CLIENTES ──
+  async function cargarClientes() {
+    const res = await fetch(`${API}/clientes`, { headers: h() });
+    if (!res.ok) return;
+    const data = await res.json();
+    const tbody = document.getElementById("tablaClientes");
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="loading">No hay clientes registrados.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.map(c => `
+      <tr>
+        <td>${c.iD_Cliente}</td>
+        <td>${c.nombre} ${c.apellido_Paterno}</td>
+        <td>${c.usuario}</td>
+        <td>${c.correo_E}</td>
+        <td>${c.telefono}</td>
+        <td>
+          <button class="btn btn-danger" onclick="eliminarCliente(${c.iD_Cliente}, '${c.nombre}')">🗑 Eliminar</button>
+        </td>
+      </tr>`).join("");
+  }
+
+  async function eliminarCliente(id, nombre) {
+    if (!confirm(`¿Eliminar al cliente "${nombre}"? Esta acción no se puede deshacer.`)) return;
+    const res = await fetch(`${API}/clientes/${id}`, { method: "DELETE", headers: h() });
+    const data = await res.json();
+    alert(data.message);
+    cargarClientes();
+  }
+
+  // ── EMPLEADOS ──
+  async function cargarEmpleados() {
+    const res = await fetch(`${API}/empleados`, { headers: h() });
+    if (!res.ok) return;
+    const data = await res.json();
+    const tbody = document.getElementById("tablaEmpleados");
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="loading">No hay empleados registrados.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.map(e => `
+      <tr>
+        <td>${e.iD_Empleado}</td>
+        <td>${e.nombre} ${e.apellido_Paterno}</td>
+        <td>${e.usuario}</td>
+        <td>${e.correo_E}</td>
+        <td>${e.telefono}</td>
+        <td>${badgeRol(e.rol_Empleado)}</td>
+        <td style="display:flex;gap:0.4rem">
+          <button class="btn btn-warning" onclick="editarEmpleado(${e.iD_Empleado},'${e.nombre}','${e.apellido_Paterno}','${e.apellido_Materno||''}','${e.telefono}','${e.correo_E}','${e.usuario}','${e.rol_Empleado}')">✏️ Editar</button>
+          <button class="btn btn-danger" onclick="eliminarEmpleado(${e.iD_Empleado},'${e.nombre}')">🗑 Eliminar</button>
+        </td>
+      </tr>`).join("");
+  }
+
+  function abrirModalEmpleado() {
+    empleadoEditandoId = null;
+    document.getElementById("modalTitulo").textContent = "Agregar Empleado";
+    document.getElementById("passHint").textContent = "(requerida)";
+    ["empNombre","empApellidoP","empApellidoM","empTelefono","empCorreo","empUsuario","empPassword"].forEach(id => document.getElementById(id).value = "");
+    document.getElementById("empRol").value = "Cocina";
+    document.getElementById("modalEmpleado").classList.add("open");
+  }
+
+  function editarEmpleado(id, nombre, apP, apM, tel, correo, usuario, rol) {
+    empleadoEditandoId = id;
+    document.getElementById("modalTitulo").textContent = "Editar Empleado";
+    document.getElementById("passHint").textContent = "(dejar vacío para no cambiar)";
+    document.getElementById("empNombre").value = nombre;
+    document.getElementById("empApellidoP").value = apP;
+    document.getElementById("empApellidoM").value = apM;
+    document.getElementById("empTelefono").value = tel;
+    document.getElementById("empCorreo").value = correo;
+    document.getElementById("empUsuario").value = usuario;
+    document.getElementById("empPassword").value = "";
+    document.getElementById("empRol").value = rol;
+    document.getElementById("modalEmpleado").classList.add("open");
+  }
+
+  function cerrarModal() {
+    document.getElementById("modalEmpleado").classList.remove("open");
+  }
+
+  async function guardarEmpleado() {
+    const body = {
+      Nombre: document.getElementById("empNombre").value.trim(),
+      Apellido_Paterno: document.getElementById("empApellidoP").value.trim(),
+      Apellido_Materno: document.getElementById("empApellidoM").value.trim() || null,
+      Telefono: document.getElementById("empTelefono").value.trim(),
+      Correo_E: document.getElementById("empCorreo").value.trim(),
+      Usuario: document.getElementById("empUsuario").value.trim(),
+      PasswordHash: document.getElementById("empPassword").value,
+      Rol_Empleado: document.getElementById("empRol").value
+    };
+
+    if (!body.Nombre || !body.Apellido_Paterno || !body.Correo_E || !body.Usuario || !body.Telefono) {
+      alert("Por favor completa todos los campos requeridos."); return;
+    }
+    if (!empleadoEditandoId && !body.PasswordHash) {
+      alert("La contraseña es requerida para nuevos empleados."); return;
+    }
+
+    const url = empleadoEditandoId ? `${API}/empleados/${empleadoEditandoId}` : `${API}/empleados`;
+    const method = empleadoEditandoId ? "PUT" : "POST";
+
+    const res = await fetch(url, { method, headers: h(), body: JSON.stringify(body) });
+    const data = await res.json();
+    alert(data.message);
+    cerrarModal();
+    cargarEmpleados();
+  }
+
+  async function eliminarEmpleado(id, nombre) {
+    if (!confirm(`¿Eliminar al empleado "${nombre}"?`)) return;
+    const res = await fetch(`${API}/empleados/${id}`, { method: "DELETE", headers: h() });
+    const data = await res.json();
+    alert(data.message);
+    cargarEmpleados();
+  }
+
+  // Iniciar
+  cargarClientes();
+  cargarEmpleados();
+</script>
+</body>
+</html>
+

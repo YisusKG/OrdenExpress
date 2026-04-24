@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar Producto</title>
+  <link rel="stylesheet" href="modificar_producto.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Modificar producto</h1>
+  </header>
+
+  <main class="formulario">
+    <form id="formModificar">
+      <select id="selectProducto" required>
+        <option value="">Selecciona un producto</option>
+      </select>
+
+      <input type="text" placeholder="Nombre del producto" name="Nombre_P" required>
+      <textarea placeholder="Descripción" name="Descripcion" required></textarea>
+      <input type="number" placeholder="Cantidad mínima" name="Cantidad_Min" required>
+      <input type="number" placeholder="Cantidad máxima" name="Cantidad_Max" required>
+      <input type="number" placeholder="Costo base" name="Costo_Base" step="0.01" required>
+      <input type="number" placeholder="Porcentaje de ganancia" name="Porcentaje_Gan" step="1" required>
+      <input type="number" placeholder="Precio de venta (calculado)" name="Precio_Venta" step="0.01" readonly>
+
+      <button type="submit">Guardar cambios</button>
+    </form>
+  </main>
+
+  <footer>
+    <button class="volver" onclick="location.href='gestionar_producto.html'">Volver</button>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="modificar_producto.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!isAdmin()) {
+        alert('Acceso no autorizado. Redirigiendo...');
+        window.location.href = 'Index.html';
+      }
+    });
+  </script>
+</body>
+</html>
+

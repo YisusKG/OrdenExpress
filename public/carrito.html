@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito</title>
+  <link rel="stylesheet" href="carrito.css">
+</head>
+<body>
+  <header class="header">
+    <div class="left-header">
+      <nav>
+        <a href="cliente.html">Inicio</a>
+        <a href="menu.html">Menu</a>
+        <a href="carrito.html">Carrito</a>
+        <a href="#">Pedidos</a>
+      </nav>
+    </div>
+    <div class="right-header">
+      <a href="#">Horario</a>
+      <a href="https://www.instagram.com/pinchosbanderillas?igsh=OTcyZmlubHZvNjFn" target="_blank">
+        <img src="instagram.png" alt="Instagram" class="icono-red">
+      </a>
+    </div>
+  </header>
+
+  <main class="carrito-contenido">
+    <h1>Carrito</h1>
+    <div id="carrito-lista"></div>
+
+    <div class="carrito-total">
+      <h2>Total: $<span id="total">0.00</span></h2>
+      <button id="comprarBtn">Comprar</button>
+    </div>
+  </main>
+
+  <script src="carrito.js"></script>
+</body>
+</html>

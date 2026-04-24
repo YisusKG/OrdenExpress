@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro / Inicio de sesión</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="left">
+      <h1>¡Hola!</h1>
+      <p>Regístrate con tus datos personales,<br>para disfrutar de nuestro menú</p>
+      <button onclick="location.href='Index.html'">Iniciar sesión</button>
+    </div>
+
+    <div class="right">
+      <h2>Registrarse</h2>
+
+      <div class="form-group">
+        <input id="nombre" type="text" placeholder="Nombre" />
+      </div>
+      <div class="form-group">
+        <input id="apellidoP" type="text" placeholder="Apellido paterno" />
+      </div>
+      <div class="form-group">
+        <input id="apellidoM" type="text" placeholder="Apellido materno" />
+      </div>
+      <div class="form-group">
+        <input id="telefono" type="tel" placeholder="Teléfono" />
+      </div>
+      <div class="form-group">
+        <input id="email" type="email" placeholder="Email" />
+      </div>
+      <div class="form-group">
+        <input id="usuario" type="text" placeholder="Usuario" />
+      </div>
+      <div class="form-group">
+        <input id="contrasena" type="password" placeholder="Contraseña" />
+      </div>
+
+      <button id="btnRegistrar">Registrarse</button>
+    </div>
+  </div>
+
+  <script src="registro.js"></script>
+</body>
+</html>

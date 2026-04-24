@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil de Cliente</title>
+  <link rel="stylesheet" href="perfil.css">
+</head>
+<body>
+  <header class="header">
+    <div class="left-header">
+      <img src="perfil.png" alt="Perfil" class="icono-perfil">
+      <nav>
+        <a href="cliente.html">Inicio</a>
+        <a href="menu.html">Menu</a>
+      </nav>
+    </div>
+    <div class="right-header">
+      <a href="https://www.instagram.com/pinchosbanderillas?igsh=OTcyZmlubHZvNjFn" target="_blank">
+        <img src="instagram.png" alt="Instagram" class="icono-red">
+      </a>
+    </div>
+  </header>
+
+  <main class="perfil-container">
+    <div class="perfil-box">
+      <form id="formPerfil" enctype="multipart/form-data">
+        <img id="fotoPerfil" src="perfil_default.png" alt="Foto de perfil" class="foto-perfil">
+        <input type="file" id="inputFoto" name="foto" accept="image/*">
+        <p class="cambiar-texto">Cambiar foto de perfil</p>
+
+        <div class="form-grid">
+          <div>
+            <label>Nombre</label>
+            <input type="text" name="Nombre">
+            <label>Apellido Paterno</label>
+            <input type="text" name="Apellido_Paterno">
+            <label>Apellido Materno</label>
+            <input type="text" name="Apellido_Materno">
+            <label>Teléfono</label>
+            <input type="tel" name="Telefono">
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" name="Email">
+            <label>Usuario</label>
+            <input type="text" name="Usuario">
+            <label>Contraseña</label>
+            <input type="password" name="Contrasena">
+          </div>
+        </div>
+
+        <button type="submit">Guardar cambios</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="perfil.js"></script>
+</body>
+</html>

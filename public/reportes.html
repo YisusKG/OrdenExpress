@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes - OrdenExpress</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdnexample.com/script.js" integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> <!-- Compliant: integrity value should be replaced with the digest of the expected resource -->
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
+    header { background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: #aed6f1; text-decoration: none; font-size: 0.9rem; }
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab-btn { padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; background: #ddd; font-size: 0.95rem; transition: background 0.2s; }
+    .tab-btn.active { background: #2c3e50; color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .card { background: white; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .card h2 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-box { background: #2c3e50; color: white; border-radius: 8px; padding: 1rem; text-align: center; }
+    .stat-box .valor { font-size: 2rem; font-weight: bold; }
+    .stat-box .label { font-size: 0.85rem; opacity: 0.8; margin-top: 0.3rem; }
+    .chart-container { position: relative; height: 300px; margin-top: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+    th { background: #2c3e50; color: white; padding: 0.7rem 1rem; text-align: left; }
+    td { padding: 0.6rem 1rem; border-bottom: 1px solid #eee; }
+    tr:hover td { background: #f9f9f9; }
+    .badge { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+    .badge-entregado { background: #d4edda; color: #155724; }
+    .badge-pendiente { background: #fff3cd; color: #856404; }
+    .badge-cancelado { background: #f8d7da; color: #721c24; }
+    .badge-preparacion { background: #cce5ff; color: #004085; }
+    .loading { text-align: center; padding: 2rem; color: #888; }
+    .btn-back { background: #2c3e50; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>📊 Reportes</h1>
+  <a href="admin.html">← Volver al panel</a>
+</header>
+
+<div class="container">
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('ventas')">💰 Ventas</button>
+    <button class="tab-btn" onclick="showTab('productos')">🛍️ Productos más vendidos</button>
+    <button class="tab-btn" onclick="showTab('pedidos')">📋 Pedidos recientes</button>
+    <button class="tab-btn" onclick="showTab('clientes')">👥 Clientes</button>
+  </div>
+
+  <!-- TAB: VENTAS -->
+  <div id="tab-ventas" class="tab-content active">
+    <div class="card">
+      <h2>💰 Resumen de Ventas</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="valor" id="ventasHoyTotal">$0</div>
+          <div class="label">Ventas hoy</div>
+        </div>
+        <div class="stat-box">
+          <div class="valor" id="pedidosHoy">0</div>
+          <div class="label">Pedidos hoy</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📅 Ventas últimos 7 días</h2>
+      <div class="chart-container"><canvas id="chartSemana"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>📆 Ventas por mes</h2>
+      <div class="chart-container"><canvas id="chartMes"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TAB: PRODUCTOS MÁS VENDIDOS -->
+  <div id="tab-productos" class="tab-content">
+    <div class="card">
+      <h2>🛍️ Top 10 Productos más vendidos</h2>
+      <div class="chart-container"><canvas id="chartProductos"></canvas></div>
+      <table aria-label="Tabla de productos-mas-vendidos">
+        <thead><tr><th>#</th><th>Producto</th><th>Cantidad Vendida</th><th>Total Generado</th></tr></thead>
+        <tbody id="tablaProductos"><tr><td colspan="4" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: PEDIDOS RECIENTES -->
+  <div id="tab-pedidos" class="tab-content">
+    <div class="card">
+      <h2>📋 Últimos 20 pedidos</h2>
+      <table aria-label="Tabla de productos-mas-vendidos">
+        <thead><tr><th>ID</th><th>Cliente</th><th>Fecha</th><th>Estado</th><th>Total</th><th>Método Pago</th></tr></thead>
+        <tbody id="tablaPedidos"><tr><td colspan="6" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: CLIENTES -->
+  <div id="tab-clientes" class="tab-content">
+    <div class="card">
+      <h2>👥 Clientes registrados</h2>
+      <table aria-label="Tabla de productos-mas-vendidos">
+        <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Pedidos</th><th>Total Gastado</th></tr></thead>
+        <tbody id="tablaClientes"><tr><td colspan="6" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  // Verificar sesión
+  if (!isAdmin()) {
+    alert("Acceso no autorizado.");
+    window.location.href = "login.html";
+  }
+
+  const API = "http://localhost:5022/api/reportes";
+
+  function headers() {
+    return { "Authorization": `Bearer ${getToken()}`, "Content-Type": "application/json" };
+  }
+
+  function formatMoney(n) {
+    return "$" + parseFloat(n).toLocaleString("es-MX", { minimumFractionDigits: 2 });
+  }
+
+  function badgeEstado(estado) {
+    const map = {
+      "Entregado": "badge-entregado",
+      "Cancelado": "badge-cancelado",
+      "En Preparación": "badge-preparacion",
+    };
+    const cls = map[estado] || "badge-pendiente";
+    return `<span class="badge ${cls}">${estado}</span>`;
+  }
+
+  // ── TABS ──
+  function showTab(tab) {
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + tab).classList.add("active");
+    event.target.classList.add("active");
+  }
+
+  // ── VENTAS ──
+  async function cargarVentas() {
+    // Hoy
+    const rHoy = await fetch(`${API}/ventas/diarias`, { headers: headers() });
+    if (rHoy.ok) {
+      const hoy = await rHoy.json();
+      document.getElementById("ventasHoyTotal").textContent = formatMoney(hoy.total ?? 0);
+      document.getElementById("pedidosHoy").textContent = hoy.pedidos ?? 0;
+    }
+
+    // Semana
+    const rSem = await fetch(`${API}/ventas/semana`, { headers: headers() });
+    if (rSem.ok) {
+      const semana = await rSem.json();
+      new Chart(document.getElementById("chartSemana"), {
+        type: "bar",
+        data: {
+          labels: semana.map(v => new Date(v.fecha).toLocaleDateString("es-MX", { weekday: "short", day: "numeric" })),
+          datasets: [{
+            label: "Ventas ($)",
+            data: semana.map(v => v.total),
+            backgroundColor: "#2c3e50",
+            borderRadius: 6
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+    }
+
+    // Mes
+    const rMes = await fetch(`${API}/ventas/mes`, { headers: headers() });
+    if (rMes.ok) {
+      const meses = await rMes.json();
+      const nombres = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+      new Chart(document.getElementById("chartMes"), {
+        type: "line",
+        data: {
+          labels: meses.map(v => `${nombres[v.mes - 1]} ${v.anio}`),
+          datasets: [{
+            label: "Ventas ($)",
+            data: meses.map(v => v.total),
+            borderColor: "#2c3e50",
+            backgroundColor: "rgba(44,62,80,0.1)",
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+  }
+
+  // ── PRODUCTOS MÁS VENDIDOS ──
+  async function cargarProductos() {
+    const res = await fetch(`${API}/productos/mas-vendidos`, { headers: headers() });
+    if (!res.ok) return;
+    const data = await res.json();
+
+    new Chart(document.getElementById("chartProductos"), {
+      type: "bar",
+      data: {
+        labels: data.map(p => p.nombre),
+        datasets: [{
+          label: "Cantidad vendida",
+          data: data.map(p => p.cantidadVendida),
+          backgroundColor: "#2c3e50",
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, indexAxis: "y", plugins: { legend: { display: false } } }
+    });
+
+    const tbody = document.getElementById("tablaProductos");
+    tbody.innerHTML = data.map((p, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${p.nombre}</td>
+        <td>${p.cantidadVendida}</td>
+        <td>${formatMoney(p.totalGenerado)}</td>
+      </tr>`).join("");
+  }
+
+  // ── PEDIDOS RECIENTES ──
+  async function cargarPedidos() {
+    const res = await fetch(`${API}/pedidos/recientes`, { headers: headers() });
+    if (!res.ok) return;
+    const data = await res.json();
+    const tbody = document.getElementById("tablaPedidos");
+    tbody.innerHTML = data.map(p => `
+      <tr>
+        <td>#${p.iD_Pedido}</td>
+        <td>${p.cliente}</td>
+        <td>${new Date(p.fecha).toLocaleString("es-MX")}</td>
+        <td>${badgeEstado(p.estado)}</td>
+        <td>${formatMoney(p.total)}</td>
+        <td>${p.metodo_Pago ?? "N/A"}</td>
+      </tr>`).join("");
+  }
+
+  // ── CLIENTES ──
+  async function cargarClientes() {
+    const res = await fetch(`${API}/clientes`, { headers: headers() });
+    if (!res.ok) return;
+    const data = await res.json();
+    const tbody = document.getElementById("tablaClientes");
+    tbody.innerHTML = data.map(c => `
+      <tr>
+        <td>${c.iD_Cliente}</td>
+        <td>${c.nombre}</td>
+        <td>${c.correo_E ?? "N/A"}</td>
+        <td>${c.telefono ?? "N/A"}</td>
+        <td>${c.totalPedidos}</td>
+        <td>${formatMoney(c.totalGastado)}</td>
+      </tr>`).join("");
+  }
+
+  // Cargar todo al iniciar
+  cargarVentas();
+  cargarProductos();
+  cargarPedidos();
+  cargarClientes();
+</script>
+</body>
+</html>
+

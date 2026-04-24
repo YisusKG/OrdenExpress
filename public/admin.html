@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrador</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Bienvenido (Admin)</h1>
+  </header>
+
+  <main class="main">
+    <img src="logoPB.png" alt="Logo" class="logo">
+
+    <div class="botones">
+      <button onclick="location.href='gestionar_producto.html'">Gestionar productos</button>
+      <button onclick="location.href='reportes.html'">Reportes</button>
+      <button onclick="location.href='usuarios.html'">Administrar usuarios</button>
+    </div>
+  </main>
+
+  <footer>
+    <button class="cerrar" onclick="logoutAdmin()">Cerrar sesión</button>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!isAdmin()) {
+        alert('Acceso no autorizado. Redirigiendo...');
+        window.location.href = 'Index.html';
+      }
+    });
+
+    function logoutAdmin() {
+      logout();
+    }
+  </script>
+</body>
+</html>
+

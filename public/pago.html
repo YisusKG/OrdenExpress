@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pago</title>
+  <link rel="stylesheet" href="pago.css">
+</head>
+<body>
+  <div class="contenedor-pago">
+    <h1>Selecciona tu método de pago</h1>
+
+    <div class="opciones-pago">
+      <label>
+        <input type="radio" name="metodo" value="tarjeta" checked>
+        <img src="tarjeta.png" alt="Tarjeta">
+        <span>Tarjeta</span>
+      </label>
+
+      <label>
+        <input type="radio" name="metodo" value="efectivo">
+        <img src="efectivo.png" alt="En local">
+        <span>Efectivo en caja</span>
+      </label>
+    </div>
+
+    <div class="resumen">
+      <h2>Total a pagar: $<span id="totalPago">0.00</span></h2>
+    </div>
+
+    <button id="confirmarPago">Confirmar Pago</button>
+    <button class="volver" onclick="location.href='carrito.html'">Volver al carrito</button>
+  </div>
+
+  <script src="pago.js"></script>
+</body>
+</html>

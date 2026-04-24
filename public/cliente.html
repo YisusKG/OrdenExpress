@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio Cliente</title>
+  <link rel="stylesheet" href="cliente.css">
+</head>
+<body>
+  <header class="header">
+    <div class="left-header">
+      <a href="perfil.html">
+        <img id="fotoHeader" src="perfil/default.png" alt="Perfil" class="icono-perfil">
+      </a>
+
+      <nav>
+        <a href="#">Inicio</a>
+        <a href="menu.html">Menu</a>
+      </nav>
+    </div>
+
+    <div class="right-header">
+      <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+
+      <a href="https://www.instagram.com/pinchosbanderillas?igsh=OTcyZmlubHZvNjFn" target="_blank">
+        <img src="instagram.png" alt="Instagram" class="icono-red">
+      </a>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="carrusel">
+      <button class="arrow izq" onclick="cambiarSlide(-1)">&lt;</button>
+
+      <div class="contenido fade" id="carrusel-contenido">
+        <img id="imagenProducto" src="" alt="Producto" class="imagen-carrusel">
+        <h1 id="nombreProducto"></h1>
+        <p id="descripcionProducto"></p>
+        <div class="botones">
+          <button class="comprar" id="btnComprar">Comprar</button>
+          <button class="menu" onclick="location.href='menu.html'">Menu</button>
+          <button class="carrito" onclick="location.href='carrito.html'">Carrito</button>
+        </div>
+      </div>
+
+      <button class="arrow der" onclick="cambiarSlide(1)">&gt;</button>
+    </section>
+
+    <div class="paginacion" id="paginacion"></div>
+
+    <section class="horario">
+      <h2>Horario</h2>
+      <div class="info">
+        <div>
+          <strong>Dirección</strong>
+          <p>Blvd. Fco. Eusebio Kino 9001<br>Servicios en el lugar</p>
+        </div>
+        <div>
+          <strong>Horario</strong>
+          <p>6:30PM - 11:00PM</p>
+        </div>
+        <div>
+          <strong>Teléfono</strong>
+          <p>664-123-4567</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="cliente.js"></script>
+</body>
+</html>
