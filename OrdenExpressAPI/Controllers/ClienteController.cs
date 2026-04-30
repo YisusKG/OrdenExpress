@@ -103,6 +103,46 @@ namespace OrdenExpressAPI.Controllers
         }
 
         /// <summary>
+        /// Obtiene un cliente por su ID.
+        /// </summary>
+        /// <param name="id">Identificador único del cliente.</param>
+        /// <returns>Datos del cliente.</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Obtener(int id)
+        {
+            var cliente = await _context.Cliente.FindAsync(id);
+            if (cliente == null)
+                return NotFound(new { message = "Cliente no encontrado" });
+            return Ok(cliente);
+        }
+
+        /// <summary>
+        /// Actualiza los datos de un cliente.
+        /// </summary>
+        /// <param name="id">Identificador único del cliente.</param>
+        /// <param name="data">Datos actualizados del cliente.</param>
+        /// <returns>Confirmación de actualización.</returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Actualizar(int id, [FromBody] Cliente data)
+        {
+            var cliente = await _context.Cliente.FindAsync(id);
+            if (cliente == null)
+                return NotFound(new { message = "Cliente no encontrado" });
+
+            cliente.Nombre = data.Nombre ?? cliente.Nombre;
+            cliente.Apellido_Paterno = data.Apellido_Paterno ?? cliente.Apellido_Paterno;
+            cliente.Apellido_Materno = data.Apellido_Materno ?? cliente.Apellido_Materno;
+            cliente.Telefono = data.Telefono ?? cliente.Telefono;
+            cliente.Correo_E = data.Correo_E ?? cliente.Correo_E;
+            cliente.Usuario = data.Usuario ?? cliente.Usuario;
+            if (!string.IsNullOrEmpty(data.Contraseña))
+                cliente.Contraseña = BCrypt.Net.BCrypt.HashPassword(data.Contraseña);
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Cliente actualizado correctamente" });
+        }
+
+        /// <summary>
         /// Actualiza la fotografía de perfil de un cliente específico.
         /// </summary>
         /// <param name="id">Identificador único del cliente.</param>

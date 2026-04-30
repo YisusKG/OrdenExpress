@@ -1,37 +1,45 @@
-# Fix C# Test Compilation Errors - Condition 1 Coverage
+# OrdenExpress — React Migration & Redesign TODO
 
-## Plan Steps (Approved)
+## Phase 1 — Foundation & Global Setup ✅
+- [x] 1.1 Install dependencies (axios, lucide-react)
+- [x] 1.2 Configure global CSS with design system variables & Manrope font
+- [x] 1.3 Set up React Router with all routes
+- [x] 1.4 Create API base service with Axios interceptors
+- [x] 1.5 Create individual service modules (auth, producto, pedido, cliente, reportes)
+- [x] 1.6 Create AuthContext (login state, role, token, logout)
+- [x] 1.7 Create CartContext (add, remove, update qty, clear, persist to localStorage)
 
-### 1. Fix UsuariosTests.cs (11 CS1729 errors)
-- Remove all mockLogger instantiations
-- Change all `new UsuariosController(context, mockLogger.Object)` → `new UsuariosController(context)`
-- Remove unused `using Microsoft.Extensions.Logging;`
+## Phase 2 — Public Pages ✅
+- [x] 2.1 Home — Hero section, featured product carousel, CTA to menu
+- [x] 2.2 Login — Split layout, Client + Admin login
+- [x] 2.3 Register — Split layout, full registration form
 
-### 2. Fix ReportesTests.cs 
-- Change `_controller = new ReportesController(_context, mockLogger.Object);` → `new ReportesController(_context);`
-- Remove mockLogger
+## Phase 3 — Client Pages (Requires Client auth) ✅
+- [x] 3.1 Menu/Carta — Product grid, API data, classification filters, Add to cart
+- [x] 3.2 Carrito — List items, adjust quantity, remove, total, Proceed to payment
+- [x] 3.3 Pago — Payment method selector, order summary, confirm → creates order
+- [x] 3.4 Perfil — View/edit profile, password change, profile photo upload
+- [x] 3.5 Mis Pedidos — NEW: Order history for logged-in client
 
-### 3. Fix PedidoTests.cs (2 CS0029 errors)
-- Line ~118: Change `List<DetallePedidoDTO>` → `List<DetallePedidoDto>`
+## Phase 4 — Admin Pages (Requires Admin auth) ✅
+- [x] 4.1 Admin Dashboard — Stats cards, recent orders, quick actions
+- [x] 4.2 Inventario — Stock table with color alerts, register stock entries
+- [x] 4.3 Gestionar Productos — Full CRUD with image upload, auto-calculate price
+- [x] 4.4 Reportes — Sales charts, top products, client list
 
-### 4. Fix ProductoTests.cs (1 CS1503 error)
-- In `Modificar_Valid_Success`: Create `Producto` instead of `ProductoUpdateForm`
-- Pass `new Producto { Nombre_P = "Updated", Precio_Venta = 25m, ... }`
+## Phase 5 — Kitchen Page ✅
+- [x] 5.1 Cocina — Kanban board (Recibido / En Preparación / Listo / Entregado)
 
-### 5. Fix Warnings (Secondary)
-- Remove duplicate usings in AdministradorTests.cs, StripeTests.cs
-- Fix xUnit1026 unused param in ClienteIntegrationTests.cs
+## Phase 6 — Shared Components & Polish ✅
+- [x] 6.1 Navbar — Glassmorphism, logo, nav links, cart badge, auth-aware
+- [x] 6.2 Sidebar — Collapsible sidebar for Admin pages
+- [x] 6.3 CardProducto — Reusable product card
+- [x] 6.4 ProtectedRoute — Route guard by role
+- [x] 6.5 Toast system — Success/error notifications
+- [x] 6.6 Responsive — Mobile-first, hamburger menu
 
-### 6. Verify
-- Run `dotnet test`
-- Generate coverage report
+---
 
-## Progress
-- [x] Step 1 (UsuariosTests.cs constructors fixed)
-- [x] Step 2 (ReportesTests.cs fixed)
-- [x] Step 3 (PedidoTests.cs DTO casing fixed)
-- [x] Step 4 (ProductoTests.cs Modificar test fixed)
-- [ ] Step 5 (Warnings)
-- [ ] Step 6 (Verify)
-
-**Current Status:** Ready to implement Step 1
+## Dev Server
+- URL: http://localhost:5173/
+- Status: Running, compiles cleanly

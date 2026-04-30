@@ -74,7 +74,9 @@ namespace OrdenExpressAPI.Controllers
             cliente.Contraseña = BCrypt.Net.BCrypt.HashPassword(cliente.Contraseña);
             _context.Cliente.Add(cliente);
             await _context.SaveChangesAsync();
+            Console.WriteLine("REGISTRO EJECUTADO");
             return Ok(new { message = "Cliente registrado" });
+            
         }
 
         [HttpPost("login-empleado")]

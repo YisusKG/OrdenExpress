@@ -8,9 +8,9 @@ using OrdenExpressAPI.Models.DTOs;
 
 namespace OrdenExpressAPI.Controllers
 {
-[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "Cliente")]
+    [Authorize]
     public class PedidoController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -86,7 +86,7 @@ namespace OrdenExpressAPI.Controllers
                 {
                     ID_Cliente = dto.ID_Cliente,
                     Fecha = DateTime.Now,
-                    Estado = "PendientePago", // Cambiado para Stripe flow
+                    Estado = "Pendiente",
                     Total = dto.Total,
                     Metodo_Pago = dto.Metodo_Pago ?? "Efectivo"
                 };
