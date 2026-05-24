@@ -13,12 +13,15 @@ import Carrito from './pages/Carrito'
 import Pago from './pages/Pago'
 import Perfil from './pages/Perfil'
 import Pedidos from './pages/Pedidos'
+import Recibo from './pages/Recibo'
 
 // Admin pages
 import AdminDashboard from './pages/AdminDashboard'
 import Inventario from './pages/Inventario'
 import GestionarProductos from './pages/GestionarProductos'
+import GestionarUsuarios from './pages/GestionarUsuarios'
 import Reportes from './pages/Reportes'
+import EmpleadoDashboard from './pages/EmpleadoDashboard'
 
 // Kitchen
 import Cocina from './pages/Cocina'
@@ -55,6 +58,11 @@ function App() {
             <Pedidos />
           </ProtectedRoute>
         } />
+        <Route path="/recibo/:id" element={
+          <ProtectedRoute allowedRoles={['Cliente']}>
+            <Recibo />
+          </ProtectedRoute>
+        } />
 
         {/* Admin */}
         <Route path="/admin" element={
@@ -72,15 +80,26 @@ function App() {
             <GestionarProductos />
           </ProtectedRoute>
         } />
+        <Route path="/admin/usuarios" element={
+          <ProtectedRoute allowedRoles={['Admin']}>
+            <GestionarUsuarios />
+          </ProtectedRoute>
+        } />
         <Route path="/admin/reportes" element={
           <ProtectedRoute allowedRoles={['Admin']}>
             <Reportes />
           </ProtectedRoute>
         } />
 
+        <Route path="/empleado" element={
+          <ProtectedRoute allowedRoles={['Empleado']}>
+            <EmpleadoDashboard />
+          </ProtectedRoute>
+        } />
+
         {/* Kitchen */}
         <Route path="/cocina" element={
-          <ProtectedRoute allowedRoles={['Admin', 'Empleado']}>
+          <ProtectedRoute allowedRoles={['Admin', 'Cocinero']}>
             <Cocina />
           </ProtectedRoute>
         } />
@@ -90,4 +109,3 @@ function App() {
 }
 
 export default App
-

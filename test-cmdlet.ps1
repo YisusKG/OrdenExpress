@@ -1,0 +1,1 @@
+$a=@("line1","line2","line3");Set-Content -Path $args[0] -Value $a -Encoding utf8

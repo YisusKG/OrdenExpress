@@ -88,8 +88,9 @@ namespace OrdenExpressAPI.Controllers
             if (empleado == null || !BCrypt.Net.BCrypt.Verify(dto.Contraseña, empleado.PasswordHash))
                 return Unauthorized(new { message = "Credenciales inválidas" });
 
-            var token = GenerateJwtToken(empleado.ID_Empleado.ToString(), "Empleado");
-            return Ok(new { token, role = "Empleado", id = empleado.ID_Empleado });
+            var role = NormalizeEmpleadoRole(empleado.Rol_Empleado);
+            var token = GenerateJwtToken(empleado.ID_Empleado.ToString(), role);
+            return Ok(new { token, role, id = empleado.ID_Empleado });
         }
 
         [HttpPost("register-empleado")]
@@ -100,10 +101,22 @@ namespace OrdenExpressAPI.Controllers
 
             empleado.Salt = BCrypt.Net.BCrypt.GenerateSalt();
             empleado.PasswordHash = BCrypt.Net.BCrypt.HashPassword(empleado.PasswordHash ?? "", empleado.Salt ?? "");
-            empleado.Rol_Empleado = empleado.Rol_Empleado ?? "Cocina";
+            empleado.Rol_Empleado = NormalizeEmpleadoRole(empleado.Rol_Empleado);
             _context.Empleado.Add(empleado);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Empleado registrado" });
+        }
+
+        private static string NormalizeEmpleadoRole(string? role)
+        {
+            if (string.IsNullOrWhiteSpace(role))
+                return "Empleado";
+
+            var normalized = role.Trim();
+            return normalized.Equals("Cocina", StringComparison.OrdinalIgnoreCase) ||
+                   normalized.Equals("Cocinero", StringComparison.OrdinalIgnoreCase)
+                ? "Cocinero"
+                : "Empleado";
         }
 
         private string GenerateJwtToken(string id, string role)

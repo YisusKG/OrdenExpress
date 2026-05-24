@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getProductos, crearProducto, modificarProducto, eliminarProducto } from '../services/productoService';
 import Sidebar from '../components/Sidebar';
 import { useToast } from '../components/Toast';
@@ -13,9 +13,9 @@ export default function GestionarProductos() {
   const [form, setForm] = useState({ nombre_P: '', clasificacion: 'Platillo', descripcion: '', cantidad_Disponible: 0, cantidad_Min: 0, cantidad_Max: 0, costo_Base: 0, porcentaje_Gan: 0, precio_Venta: 0 });
   const [imagen, setImagen] = useState(null);
 
-  useEffect(() => { cargar(); }, []);
+  const cargar = useCallback(() => { getProductos().then((data) => setProductos(data)).catch(() => {}).finally(() => setLoading(false)); }, []);
 
-  const cargar = () => { getProductos().then((data) => setProductos(data)).catch(() => {}).finally(() => setLoading(false)); };
+  useEffect(() => { cargar(); }, [cargar]);
 
   const calcularPrecio = (c, pct) => { const costo = parseFloat(c) || 0; const p = parseFloat(pct) || 0; return (costo + costo * p / 100).toFixed(2); };
 
@@ -25,9 +25,23 @@ export default function GestionarProductos() {
 
   const guardar = async () => {
     try {
-      const data = { ...form, precio_Venta: parseFloat(form.precio_Venta) };
+      const data = {
+        ...form,
+        cantidad_Disponible: parseInt(form.cantidad_Disponible, 10) || 0,
+        cantidad_Min: parseInt(form.cantidad_Min, 10) || 0,
+        cantidad_Max: parseInt(form.cantidad_Max, 10) || 0,
+        costo_Base: parseFloat(form.costo_Base) || 0,
+        porcentaje_Gan: parseFloat(form.porcentaje_Gan) || 0,
+        precio_Venta: parseFloat(form.precio_Venta) || 0,
+      };
       if (editId) { await modificarProducto(editId, data); addToast('Producto actualizado', 'success'); }
-      else { await crearProducto(data, imagen); addToast('Producto creado', 'success'); }
+      else {
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => formData.append(key, value));
+        if (imagen) formData.append('imagen', imagen);
+        await crearProducto(formData);
+        addToast('Producto creado', 'success');
+      }
       setModal(false); cargar();
     } catch { addToast('Error al guardar', 'error'); }
   };

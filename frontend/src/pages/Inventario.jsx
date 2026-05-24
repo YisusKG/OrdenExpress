@@ -1,26 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getInventario, entradaInventario } from '../services/productoService';
 import Sidebar from '../components/Sidebar';
 import { useToast } from '../components/Toast';
-import { Plus } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 
 export default function Inventario() {
   const { addToast } = useToast();
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
+  const [modal, setModal] = useState(false);
   const [entrada, setEntrada] = useState({ id: '', cantidad: 1 });
 
-  useEffect(() => {
-    cargar();
-  }, []);
-
-  const cargar = () => {
+  const cargar = useCallback(() => {
     getInventario()
       .then((data) => setProductos(data))
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, []);
+
+  useEffect(() => {
+    cargar();
+  }, [cargar]);
 
   const handleEntrada = async () => {
     if (!entrada.id || entrada.cantidad <= 0) {
@@ -30,7 +30,7 @@ export default function Inventario() {
     try {
       await entradaInventario(entrada.id, entrada.cantidad);
       addToast('Entrada registrada', 'success');
-      setShowForm(false);
+      setModal(false);
       setEntrada({ id: '', cantidad: 1 });
       cargar();
     } catch {
@@ -54,41 +54,10 @@ export default function Inventario() {
               <h1 style={{ marginBottom: '4px' }}>Inventario</h1>
               <p style={{ color: 'var(--muted)', fontSize: '14px' }}>Control de existencias</p>
             </div>
-            <button className="btn btn-terracotta btn-sm" onClick={() => setShowForm(!showForm)}>
+            <button className="btn btn-terracotta btn-sm" onClick={() => setModal(true)}>
               <Plus size={16} /> Registrar entrada
             </button>
           </div>
-
-          {showForm && (
-            <div className="card" style={{ padding: '24px', marginBottom: '24px' }}>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'end', flexWrap: 'wrap' }}>
-                <div style={{ flex: 1, minWidth: '200px' }}>
-                  <label style={{ fontSize: '13px', fontWeight: 600, marginBottom: '6px', display: 'block' }}>Producto</label>
-                  <select
-                    className="input"
-                    value={entrada.id}
-                    onChange={(e) => setEntrada({ ...entrada, id: e.target.value })}
-                  >
-                    <option value="">Seleccionar...</option>
-                    {productos.map((p) => (
-                      <option key={p.iD_Producto} value={p.iD_Producto}>{p.nombre_P}</option>
-                    ))}
-                  </select>
-                </div>
-                <div style={{ width: '140px' }}>
-                  <label style={{ fontSize: '13px', fontWeight: 600, marginBottom: '6px', display: 'block' }}>Cantidad</label>
-                  <input
-                    className="input"
-                    type="number"
-                    min="1"
-                    value={entrada.cantidad}
-                    onChange={(e) => setEntrada({ ...entrada, cantidad: parseInt(e.target.value) || 0 })}
-                  />
-                </div>
-                <button className="btn btn-terracotta" onClick={handleEntrada}>Guardar</button>
-              </div>
-            </div>
-          )}
 
           {loading ? (
             <div className="card loading" style={{ height: '300px' }} />
@@ -127,8 +96,34 @@ export default function Inventario() {
             </div>
           )}
         </div>
+
+        {modal && (
+          <div className="modal-backdrop">
+            <div className="modal">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '18px' }}>Registrar entrada</h3>
+                <button className="btn btn-ghost btn-sm" onClick={() => setModal(false)}><X size={18} /></button>
+              </div>
+              <div className="form-grid">
+                <div className="form-group full">
+                  <label className="form-label">Producto</label>
+                  <select className="input" value={entrada.id} onChange={(e) => setEntrada({ ...entrada, id: e.target.value })}>
+                    <option value="">Seleccionar...</option>
+                    {productos.map((p) => (
+                      <option key={p.iD_Producto} value={p.iD_Producto}>{p.nombre_P}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Cantidad</label>
+                  <input className="input" type="number" min="1" value={entrada.cantidad} onChange={(e) => setEntrada({ ...entrada, cantidad: parseInt(e.target.value) || 0 })} />
+                </div>
+              </div>
+              <button className="btn btn-terracotta" style={{ marginTop: '24px', width: '100%' }} onClick={handleEntrada}>Guardar entrada</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-

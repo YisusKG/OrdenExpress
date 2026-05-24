@@ -6,6 +6,7 @@ using OrdenExpressAPI.Controllers;
 using OrdenExpressAPI.Data;
 using OrdenExpressAPI.Models.DTOs;
 using OrdenExpressAPI.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace OrdenExpressAPI.Tests;
 
@@ -20,7 +21,11 @@ public class AdministradorTests
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
         _context = new AppDbContext(options);
-        _controller = new AdministradorController(_context);
+        var mockConfig = new Mock<IConfiguration>();
+        mockConfig.Setup(c => c["Jwt:Key"]).Returns("SuperSecretKeyOrdenExpress2024!@#");
+        mockConfig.Setup(c => c["Jwt:Issuer"]).Returns("test");
+        mockConfig.Setup(c => c["Jwt:Audience"]).Returns("test");
+        _controller = new AdministradorController(_context, mockConfig.Object);
     }
 
     [Fact]
@@ -34,6 +39,7 @@ public class AdministradorTests
 
         Assert.NotNull(result);
         Assert.Equal(200, result.StatusCode);
+        Assert.Contains("token", result.Value?.ToString());
     }
 
     [Fact]

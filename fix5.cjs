@@ -1,0 +1,1 @@
+const fs=require("fs");function q(s){o.push(s)};const o=[];c.split(/\n/).forEach(line=>{const m=line.match(/^([\\s\\S]*?)q\\("(.*)\"\\)\\$/);if(m){eval(m[1]+"q("+JSON.stringify(m[2])+")");}else{eval(line);}});fs.writeFileSync(p,o.join(String.fromCharCode(10)));console.log(fs.statSync(p).size)

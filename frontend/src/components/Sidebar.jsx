@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, ClipboardList, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Package, ClipboardList, BarChart3, Users } from 'lucide-react';
 
 export default function Sidebar() {
   const links = [
     { to: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/admin/inventario', icon: Package, label: 'Inventario' },
     { to: '/admin/productos', icon: ClipboardList, label: 'Productos' },
+    { to: '/admin/usuarios', icon: Users, label: 'Usuarios' },
     { to: '/admin/reportes', icon: BarChart3, label: 'Reportes' },
   ];
 
@@ -22,9 +23,9 @@ export default function Sidebar() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '12px', fontWeight: 700,
         }}>
-          OX
+          PB
         </div>
-        <span style={{ fontWeight: 700, fontSize: '16px' }}>Admin</span>
+        <span style={{ fontWeight: 700, fontSize: '16px' }}>Pinchos Admin</span>
       </div>
 
       <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>

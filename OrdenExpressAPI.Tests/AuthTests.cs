@@ -214,7 +214,7 @@ public class AuthTests
     }
 
     [Fact]
-    public async Task RegisterEmpleado_SinRol_AsignaCocinaDefault()
+    public async Task RegisterEmpleado_SinRol_AsignaEmpleadoDefault()
     {
         var (controller, context) = CreateController();
         var empleado = new Empleado
@@ -229,7 +229,7 @@ public class AuthTests
 
         var saved = await context.Empleado.FirstOrDefaultAsync();
         Assert.NotNull(saved);
-        Assert.Equal("Cocina", saved.Rol_Empleado);
+        Assert.Equal("Empleado", saved.Rol_Empleado);
     }
 }
 

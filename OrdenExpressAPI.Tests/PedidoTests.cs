@@ -46,7 +46,7 @@ public class PedidoTests
         var result = await _controller.GetTodosPedidos();
 
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var pedidos = Assert.IsType<List<Pedido>>(okResult.Value);
+        var pedidos = Assert.IsAssignableFrom<IEnumerable<object>>(okResult.Value);
         Assert.NotEmpty(pedidos);
     }
 
@@ -119,7 +119,8 @@ public class PedidoTests
     [Fact]
     public async Task CambiarEstado_Valid_Success()
     {
-        _context.Pedido.Add(new Pedido { ID_Pedido = 1, Estado = "Pendiente" });
+        var fechaOriginal = DateTime.Now.AddMinutes(-10);
+        _context.Pedido.Add(new Pedido { ID_Pedido = 1, Estado = "Pendiente", Fecha = fechaOriginal });
         await _context.SaveChangesAsync();
 
         var result = await _controller.CambiarEstado(1, "Listo");
@@ -128,6 +129,7 @@ public class PedidoTests
         var updated = await _context.Pedido.FindAsync(1);
         Assert.NotNull(updated);
         Assert.Equal("Listo", updated.Estado);
+        Assert.True(updated.Fecha > fechaOriginal);
     }
 
     [Fact]

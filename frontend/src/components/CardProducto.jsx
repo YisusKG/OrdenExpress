@@ -1,15 +1,36 @@
 import { useCart } from '../context/CartContext';
 import { Plus } from 'lucide-react';
+import { API_ORIGIN } from '../services/api';
+
+const getImageUrl = (imageName) => {
+  if (!imageName) return '/images/Hamburguesa.jpg';
+  if (/^https?:\/\//i.test(imageName)) return imageName;
+  if (imageName.includes('/')) return imageName;
+  return `/images/${imageName}`;
+};
+
+const getBackendImageUrl = (imageName) => {
+  if (!imageName || /^https?:\/\//i.test(imageName) || imageName.includes('/')) return null;
+  return `${API_ORIGIN}/fotos/${imageName}`;
+};
 
 export default function CardProducto({ producto }) {
   const { addItem } = useCart();
+  const backendImageUrl = getBackendImageUrl(producto.imagen);
 
   return (
     <div className="card" style={{ overflow: 'hidden', transition: 'transform 0.2s, box-shadow 0.2s' }}>
       <div style={{ height: '200px', overflow: 'hidden', position: 'relative' }}>
         <img
-          src={`/images/${producto.imagen}`}
+          src={getImageUrl(producto.imagen)}
           alt={producto.nombre_P}
+          onError={(event) => {
+            if (backendImageUrl && event.currentTarget.src !== backendImageUrl) {
+              event.currentTarget.src = backendImageUrl;
+              return;
+            }
+            event.currentTarget.src = '/images/Hamburguesa.jpg';
+          }}
           style={{
             width: '100%',
             height: '100%',
@@ -24,7 +45,7 @@ export default function CardProducto({ producto }) {
             ${parseFloat(producto.precio_Venta).toFixed(2)}
           </span>
         </div>
-        <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '16px', lineHeight: 1.4 }}>
+        <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '16px', lineHeight: 1.4, minHeight: '38px' }}>
           {producto.descripcion}
         </p>
         <button

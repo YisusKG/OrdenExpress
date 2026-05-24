@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrdenExpressAPI.Data;
 using OrdenExpressAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OrdenExpressAPI.Controllers
 {
@@ -49,18 +50,37 @@ namespace OrdenExpressAPI.Controllers
         }
 
         [HttpPost("empleados")]
-        public async Task<IActionResult> CreateEmpleado([FromBody] Empleado empleado)
+        public async Task<IActionResult> CreateEmpleado([FromBody] CreateEmpleadoDto datos)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            empleado.Salt = BCrypt.Net.BCrypt.GenerateSalt();
-            empleado.PasswordHash = BCrypt.Net.BCrypt.HashPassword(empleado.PasswordHash, empleado.Salt);
+
+            var usuarioExiste = await _context.Empleado.AnyAsync(e => e.Usuario == datos.Usuario);
+            if (usuarioExiste) return BadRequest(new { message = "El usuario ya existe" });
+
+            var correoExiste = await _context.Empleado.AnyAsync(e => e.Correo_E == datos.Correo_E);
+            if (correoExiste) return BadRequest(new { message = "El correo ya existe" });
+
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            var empleado = new Empleado
+            {
+                Nombre = datos.Nombre,
+                Apellido_Paterno = datos.Apellido_Paterno,
+                Apellido_Materno = datos.Apellido_Materno,
+                Telefono = datos.Telefono,
+                Correo_E = datos.Correo_E,
+                Usuario = datos.Usuario,
+                Salt = salt,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(datos.PasswordHash, salt),
+                Rol_Empleado = NormalizeEmpleadoRole(datos.Rol_Empleado)
+            };
+
             _context.Empleado.Add(empleado);
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Empleado registrado correctamente" });
+            return Ok(new { message = "Empleado registrado correctamente", id = empleado.ID_Empleado });
         }
 
         [HttpPut("empleados/{id}")]
-        public async Task<IActionResult> UpdateEmpleado(int id, [FromBody] Empleado datos)
+        public async Task<IActionResult> UpdateEmpleado(int id, [FromBody] UpdateEmpleadoDto datos)
         {
             var empleado = await _context.Empleado.FindAsync(id);
             if (empleado == null) return NotFound(new { message = "Empleado no encontrado" });
@@ -69,7 +89,8 @@ namespace OrdenExpressAPI.Controllers
             empleado.Apellido_Materno = datos.Apellido_Materno;
             empleado.Correo_E = datos.Correo_E;
             empleado.Telefono = datos.Telefono;
-            empleado.Rol_Empleado = datos.Rol_Empleado;
+            empleado.Usuario = datos.Usuario;
+            empleado.Rol_Empleado = NormalizeEmpleadoRole(datos.Rol_Empleado);
             if (!string.IsNullOrEmpty(datos.PasswordHash))
             {
                 empleado.Salt = BCrypt.Net.BCrypt.GenerateSalt();
@@ -88,5 +109,55 @@ namespace OrdenExpressAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Empleado eliminado" });
         }
+
+        private static string NormalizeEmpleadoRole(string? role)
+        {
+            if (string.IsNullOrWhiteSpace(role))
+                return "Empleado";
+
+            var normalized = role.Trim();
+            return normalized.Equals("Cocina", StringComparison.OrdinalIgnoreCase) ||
+                   normalized.Equals("Cocinero", StringComparison.OrdinalIgnoreCase)
+                ? "Cocinero"
+                : "Empleado";
+        }
+    }
+
+    public class CreateEmpleadoDto
+    {
+        [Required]
+        public string Nombre { get; set; } = string.Empty;
+
+        [Required]
+        public string Apellido_Paterno { get; set; } = string.Empty;
+
+        public string? Apellido_Materno { get; set; }
+
+        [Required]
+        public string Telefono { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Correo_E { get; set; } = string.Empty;
+
+        [Required]
+        public string Usuario { get; set; } = string.Empty;
+
+        [Required]
+        public string PasswordHash { get; set; } = string.Empty;
+
+        public string Rol_Empleado { get; set; } = "Empleado";
+    }
+
+    public class UpdateEmpleadoDto
+    {
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido_Paterno { get; set; } = string.Empty;
+        public string? Apellido_Materno { get; set; }
+        public string Telefono { get; set; } = string.Empty;
+        public string Correo_E { get; set; } = string.Empty;
+        public string Usuario { get; set; } = string.Empty;
+        public string? PasswordHash { get; set; }
+        public string Rol_Empleado { get; set; } = "Empleado";
     }
 }

@@ -1,0 +1,1 @@
+const fs=require("fs"),out=[],buf=fs.readFileSync(src,"utf8"),src="c:/Users/valde/Documents/Programs Visual Studio Code/OrdenExpress/gen5.cjs",function p(s){out.push(s)}

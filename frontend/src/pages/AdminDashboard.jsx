@@ -5,6 +5,24 @@ import { getInventario } from '../services/productoService';
 import Sidebar from '../components/Sidebar';
 import { DollarSign, Package, ShoppingCart, AlertTriangle, ArrowRight } from 'lucide-react';
 
+function StatCard({ icon: Icon, label, value, color }) {
+  return (
+    <div className="card" style={{ padding: '28px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+        <div style={{
+          width: '44px', height: '44px', borderRadius: '12px',
+          background: color + '15', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Icon size={22} style={{ color }} />
+        </div>
+      </div>
+      <p style={{ fontSize: '28px', fontWeight: 800, marginBottom: '4px' }}>{value}</p>
+      <p style={{ fontSize: '13px', color: 'var(--muted)' }}>{label}</p>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ total: 0, pedidos: 0 });
@@ -27,22 +45,6 @@ export default function AdminDashboard() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
-
-  const StatCard = ({ icon: Icon, label, value, color }) => (
-    <div className="card" style={{ padding: '28px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
-        <div style={{
-          width: '44px', height: '44px', borderRadius: '12px',
-          background: color + '15', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Icon size={22} style={{ color }} />
-        </div>
-      </div>
-      <p style={{ fontSize: '28px', fontWeight: 800, marginBottom: '4px' }}>{value}</p>
-      <p style={{ fontSize: '13px', color: 'var(--muted)' }}>{label}</p>
-    </div>
-  );
 
   return (
     <div style={{ display: 'flex' }}>
@@ -131,4 +133,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-

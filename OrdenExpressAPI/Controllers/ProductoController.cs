@@ -131,7 +131,9 @@ namespace OrdenExpressAPI.Controllers
                 return NotFound(new { message = "Producto no encontrado" });
 
             producto.Nombre_P = productoActualizado.Nombre_P;
+            producto.Clasificacion = productoActualizado.Clasificacion;
             producto.Descripcion = productoActualizado.Descripcion;
+            producto.Cantidad_Disponible = productoActualizado.Cantidad_Disponible;
             producto.Cantidad_Min = productoActualizado.Cantidad_Min;
             producto.Cantidad_Max = productoActualizado.Cantidad_Max;
             producto.Costo_Base = productoActualizado.Costo_Base;

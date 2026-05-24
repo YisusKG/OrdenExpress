@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getTodosPedidos, cambiarEstadoPedido } from '../services/pedidoService';
 import { useToast } from '../components/Toast';
 import { Clock, ChefHat, CheckCircle, Truck } from 'lucide-react';
@@ -15,20 +15,24 @@ export default function Cocina() {
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    cargar();
-    const interval = setInterval(cargar, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const cargar = () => {
+  const cargar = useCallback(() => {
     getTodosPedidos()
       .then((data) => setPedidos(data))
       .catch(() => {})
       .finally(() => setLoading(false));
-  };
+  }, []);
+
+  useEffect(() => {
+    cargar();
+    const interval = setInterval(cargar, 10000);
+    return () => clearInterval(interval);
+  }, [cargar]);
 
   const mover = async (pedido, nuevoEstado) => {
+    if (nuevoEstado === 'Entregado' && pedido.metodo_Pago === 'Efectivo' && pedido.estado === 'Pendiente') {
+      addToast('No se puede entregar un pedido en efectivo sin cobrar', 'warning');
+      return;
+    }
     try {
       await cambiarEstadoPedido(pedido.iD_Pedido, nuevoEstado);
       addToast('Pedido #' + pedido.iD_Pedido + ' -> ' + nuevoEstado, 'success');
@@ -57,11 +61,11 @@ export default function Cocina() {
         </div>
 
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+          <div className="kitchen-grid">
             {[1,2,3,4].map((i) => <div key={i} className='card loading' style={{ height: '400px', background: '#222' }} />)}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+          <div className="kitchen-grid">
             {columnas.map((col) => {
               const colPedidos = pedidos.filter((p) => p.estado === col.id);
               const Icon = col.icon;

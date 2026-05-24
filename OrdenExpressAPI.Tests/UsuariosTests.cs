@@ -92,7 +92,16 @@ public class UsuariosTests
         // Arrange
         var context = CreateInMemoryContext();
         var controller = new UsuariosController(context);
-        var empleado = new Empleado { Nombre = "New", Usuario = "newemp", PasswordHash = "pass" };
+        var empleado = new CreateEmpleadoDto
+        {
+            Nombre = "New",
+            Apellido_Paterno = "Empleado",
+            Telefono = "1234567890",
+            Correo_E = "newemp@test.com",
+            Usuario = "newemp",
+            PasswordHash = "pass",
+            Rol_Empleado = "Cocinero"
+        };
 
         // Act
         var result = await controller.CreateEmpleado(empleado);
@@ -175,7 +184,7 @@ public class UsuariosTests
         var controller = new UsuariosController(context);
         controller.ModelState.AddModelError("Nombre", "Required");
 
-        var empleado = new Empleado();
+        var empleado = new CreateEmpleadoDto();
 
         // Act
         var result = await controller.CreateEmpleado(empleado);

@@ -1,0 +1,2 @@
+const fs=require('fs')');const p='c:/Users/valde/Documents/Programs Visual Studio Code/OrdenExpress/frontend/src/pages/EmpleadoaDashboard.jsx';
+fs.readFileSync(p,'utf8',2000,function(err,data){if(err)return console.log({err,'failed');console.log({data.length,'chars already wrotten'});});

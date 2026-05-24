@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { getCliente, actualizarCliente, actualizarFoto } from '../services/clienteService';
 import { useToast } from '../components/Toast';
 import { Camera, Save } from 'lucide-react';
+import { API_ORIGIN } from '../services/api';
 
 export default function Perfil() {
   const { user, setUser } = useAuth();
@@ -15,7 +16,7 @@ export default function Perfil() {
   useEffect(() => {
     if (!user?.id) return;
     getCliente(user.id).then((data) => {
-      setForm({ nombre: data.nombre || '', apellido_Paterno: data.apellido_Paterno || '', apellido_Materno: data.apellido_Materno || '', telefono: data.telefono || '', correo_E: data.correo_E || '', usuario: data.usuario || '', contraseña: '' });
+      setForm({ nombre: data.nombre || '', apellido_Paterno: data.apellido_Paterno || '', apellido_Materno: data.apellido_Materno || '', telefono: data.telefono || '', correo_E: data.correo_E || '', usuario: data.usuario || '', foto_Perfil: data.foto_Perfil || '', contraseña: '' });
     }).catch(() => {}).finally(() => setLoading(false));
   }, [user]);
 
@@ -31,7 +32,7 @@ export default function Perfil() {
     finally { setSaving(false); }
   };
 
-  const fotoUrl = user?.id ? 'http://localhost:5022/perfil/' + (form.foto_Perfil || 'default.png') : '/perfil/default.png';
+  const fotoUrl = form.foto_Perfil ? `${API_ORIGIN}/perfil/${form.foto_Perfil}` : '';
 
   return (
     <div className="container" style={{ padding: '40px 20px', maxWidth: '700px' }}>
@@ -42,7 +43,13 @@ export default function Perfil() {
           <div className="card" style={{ padding: '32px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '32px' }}>
               <div style={{ position: 'relative' }}>
-                <img src={fotoUrl} alt="Foto" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                {fotoUrl ? (
+                  <img src={fotoUrl} alt="Foto" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--sand)', color: 'var(--terracotta)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px', fontWeight: 800 }}>
+                    {(form.nombre || 'U').charAt(0).toUpperCase()}
+                  </div>
+                )}
                 <button onClick={() => fileRef.current?.click()} style={{ position: 'absolute', bottom: 0, right: 0, width: '28px', height: '28px', borderRadius: '50%', background: 'var(--terracotta)', color: 'var(--white)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Camera size={14} />
                 </button>
@@ -77,4 +84,3 @@ export default function Perfil() {
       </div>
   );
 }
-

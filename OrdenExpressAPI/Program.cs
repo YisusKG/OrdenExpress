@@ -14,7 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-    policy => policy.WithOrigins("http://localhost:3001", "http://localhost:3000", "http://localhost:5173")
+    policy => policy.WithOrigins(
+                            "http://localhost:3001",
+                            "http://localhost:3000",
+                            "http://localhost:5173",
+                            "http://127.0.0.1:5173")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
@@ -50,6 +54,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Cliente", policy => policy.RequireRole("Cliente"));
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Empleado", policy => policy.RequireRole("Empleado"));
+    options.AddPolicy("Cocinero", policy => policy.RequireRole("Cocinero"));
 });
 
 // Swagger
@@ -58,10 +64,12 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme",
-        Name = "Authorization",
+        Description = "Pega aqui solo el token JWT. Swagger agregara el prefijo Bearer automaticamente.",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {

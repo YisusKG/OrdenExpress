@@ -1,0 +1,1 @@
+$a=@("line1","line2");$a|Set-Content test-out.txt

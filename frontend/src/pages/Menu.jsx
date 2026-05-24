@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getMenu } from '../services/productoService';
 import CardProducto from '../components/CardProducto';
 import { Search, SlidersHorizontal } from 'lucide-react';
 
 export default function Menu() {
   const [productos, setProductos] = useState([]);
-  const [filtered, setFiltered] = useState([]);
   const [clasificaciones, setClasificaciones] = useState([]);
   const [activeFilters, setActiveFilters] = useState([]);
   const [search, setSearch] = useState('');
@@ -15,7 +14,6 @@ export default function Menu() {
     getMenu()
       .then((data) => {
         setProductos(data);
-        setFiltered(data);
         const cats = [...new Set(data.map((p) => p.clasificacion).filter(Boolean))];
         setClasificaciones(cats);
       })
@@ -23,7 +21,7 @@ export default function Menu() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
+  const filtered = useMemo(() => {
     let result = productos;
     if (activeFilters.length > 0) {
       result = result.filter((p) =>
@@ -35,7 +33,7 @@ export default function Menu() {
         p.nombre_P?.toLowerCase().includes(search.toLowerCase())
       );
     }
-    setFiltered(result);
+    return result;
   }, [activeFilters, search, productos]);
 
   const toggleFilter = (cat) => {

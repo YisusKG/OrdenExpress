@@ -1,0 +1,1 @@
+const fs=require("fs");const p="c:/Users/valde/Documents/Programs Visual Studio Code/OrdenExpress/frontend/src/pages/EmpleadoDashboard.jsx";function q(s){o.push(s)};eval(c);fs.writeFileSync(p,o.join(String.fromCharCode(10)));console.log(fs.statSync(p).size)

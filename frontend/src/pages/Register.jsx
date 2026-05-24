@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { registerCliente } from '../services/authService';
 import { useToast } from '../components/Toast';
 import './auth.css';
+import logo from '../../images/Logo.png';
+import banderilla1 from '../../images/Banderilla1.jpg';
+import banderilla3 from '../../images/Banderillas3.jpg';
+import banderilla4 from '../../images/Banderillas4.jpg';
+import arosImg from '../../images/Aros.jpg';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -40,17 +45,27 @@ export default function Register() {
   return (
     <div className="auth-container">
       <div className="auth-left">
-        <img
-          src="https://images.unsplash.com/photo-1551218808-94e220e084d2"
-          alt="cocina"
-        />
-        <div className="overlay">
-          <h2>Únete a la experiencia.</h2>
+        <div className="auth-left__logo-area">
+          <img src={logo} alt="Pinchos Banderillas" />
+          <span>Pinchos Banderillas</span>
+        </div>
+
+        <div className="auth-left__grid">
+          <div className="gi"><img src={banderilla1} alt="Banderilla" /></div>
+          <div className="gi"><img src={banderilla4} alt="Banderilla" /></div>
+          <div className="gi"><img src={banderilla3} alt="Banderilla" /></div>
+          <div className="gi"><img src={arosImg} alt="Aros de cebolla" /></div>
+        </div>
+
+        <div className="auth-left__text">
+          <h2>Únete a la familia <b>Pinchos Banderillas</b>.</h2>
+          <p>Crea tu cuenta y descubre todo lo que tenemos para ti.</p>
         </div>
       </div>
 
       <div className="auth-right">
-        <h1>Crear cuenta</h1>
+        <span className="tag">CREAR CUENTA</span>
+        <h1>Regístrate.</h1>
         <p>Completa tus datos para comenzar</p>
 
         <input name="Nombre" placeholder="Nombre *" value={form.Nombre} onChange={handleChange} />
@@ -61,15 +76,14 @@ export default function Register() {
         <input name="Correo_E" placeholder="Correo electrónico *" value={form.Correo_E} onChange={handleChange} />
         <input name="Contraseña" type="password" placeholder="Contraseña *" value={form.Contraseña} onChange={handleChange} />
 
-        <button onClick={handleRegister} disabled={loading}>
-          {loading ? 'Registrando...' : 'Registrarse'}
+        <button className="btn-login" onClick={handleRegister} disabled={loading}>
+          {loading ? 'Registrando...' : 'Crear cuenta'}
         </button>
 
-        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: '#666' }}>
+        <p className="register-text">
           Ya tienes cuenta? <a href="/login">Inicia sesión</a>
         </p>
       </div>
     </div>
   );
 }
-

@@ -1,13 +1,14 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, User, Menu as MenuIcon, X, ChefHat, LayoutDashboard, ClipboardList } from 'lucide-react';
+import { ShoppingCart, User, Menu as MenuIcon, X, ChefHat, LayoutDashboard, BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
+import logo from '../../images/Logo.png';
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout, isClient, isAdmin, isKitchen } = useAuth();
+  const { user, logout, isClient, isAdmin, isEmpleado, isKitchen } = useAuth();
   const { count } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -38,27 +39,15 @@ export default function Navbar() {
       }}>
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => navigate('/')}>
-          <div style={{
-            width: '34px',
-            height: '34px',
-            borderRadius: '50%',
-            background: 'var(--terracotta)',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '12px',
-            fontWeight: 800,
-          }}>
-            OX
-          </div>
-          <span style={{ fontWeight: 700, fontSize: '16px' }}>OrdenExpress</span>
+          <img src={logo} alt="Pinchos Banderillas" style={{ width: 40, height: 40, objectFit: 'contain' }} />
+          <span style={{ fontWeight: 700, fontSize: '16px' }}>Pinchos Banderillas</span>
         </div>
 
         {/* Desktop Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }} className="nav-desktop">
           <span style={linkStyle} onClick={() => navigate('/menu')}>Carta</span>
           {isKitchen() && <span style={linkStyle} onClick={() => navigate('/cocina')}><ChefHat size={14} style={{marginRight:4, verticalAlign:'middle'}}/>Cocina</span>}
+          {isEmpleado() && <span style={linkStyle} onClick={() => navigate('/empleado')}><BriefcaseBusiness size={14} style={{marginRight:4, verticalAlign:'middle'}}/>Empleado</span>}
           {isAdmin() && <span style={linkStyle} onClick={() => navigate('/admin')}><LayoutDashboard size={14} style={{marginRight:4, verticalAlign:'middle'}}/>Admin</span>}
         </div>
 
@@ -117,6 +106,7 @@ export default function Navbar() {
         }}>
           <span style={linkStyle} onClick={() => { navigate('/menu'); setMobileOpen(false); }}>Carta</span>
           {isKitchen() && <span style={linkStyle} onClick={() => { navigate('/cocina'); setMobileOpen(false); }}>Cocina</span>}
+          {isEmpleado() && <span style={linkStyle} onClick={() => { navigate('/empleado'); setMobileOpen(false); }}>Empleado</span>}
           {isAdmin() && <span style={linkStyle} onClick={() => { navigate('/admin'); setMobileOpen(false); }}>Admin</span>}
           {isClient() && <span style={linkStyle} onClick={() => { navigate('/carrito'); setMobileOpen(false); }}>Carrito ({count})</span>}
           {isClient() && <span style={linkStyle} onClick={() => { navigate('/perfil'); setMobileOpen(false); }}>Perfil</span>}
